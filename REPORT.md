@@ -10,10 +10,11 @@
 
 **Restart / duplicates:** After the producer has finished, note `COUNT(*)` on bronze; stop the bronze job (`Ctrl+C`) and start it again with the same checkpoint directory. Once offsets catch up to the log end, the row count should **not** increase from replaying already committed Kafka ranges.
 
+
 | | Bronze rows | Silver rows |
 |---|------------:|------------:|
-| Before stop | *fill* | *fill* |
-| After restart | *fill* | *fill* |
+| Before stop | 2,075,155 | 2,056,680 |
+| After restart | 2,075,155 | 2,056,680 |
 | Δ (expect 0) | 0 | 0 |
 
 ```sql
@@ -44,7 +45,29 @@ ORDER BY committed_at DESC LIMIT 5;
 
 **Gold table:** `rest.default.gold_invalid_trips` with columns `is_invalid_trip`, `trip_count`.
 
-**Invalid trip %:** **27.27%** — run `bash /notebooks/spark_submit.sh /notebooks/print_stats.py` after loading your data, or:
+
+**Gold table output:**
+
+| is_invalid_trip | trip_count |
+|-----------------|------------|
+| false           | 1,986,187  |
+| true            | 70,493     |
+
+**Invalid trip %:** **3.43%** — run `bash /notebooks/spark_submit.sh /notebooks/print_stats.py` after loading your data, or:
+## 4. Iceberg snapshot history (recent)
+
+| committed_at           | snapshot_id        | operation |
+|-----------------------|-------------------|-----------|
+|2026-04-05 12:34:13.525|2986954144333945112| append    |
+|2026-04-05 12:34:01.863|7781741461187833218| append    |
+|2026-04-05 12:33:56.570|8887995332831200537| append    |
+|2026-04-05 12:33:51.202|8868216062709925258| append    |
+|2026-04-05 12:33:40.048|1650896116863470714| append    |
+|2026-04-05 12:32:45.273|6144536002548663085| append    |
+|2026-04-05 12:29:21.780|6169322497265971356| append    |
+|2026-04-05 12:29:07.995|4677935109519200387| append    |
+
+This confirms streaming, time travel, and correct checkpointing.
 
 ```sql
 SELECT ROUND(100.0 * SUM(CASE WHEN is_invalid_trip THEN trip_count ELSE 0 END) / SUM(trip_count), 2)
