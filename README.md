@@ -6,7 +6,7 @@ Checkpoints: **`s3a://warehouse/streaming-checkpoints/...`** on MinIO (not `file
 
 ## Data
 
-Put Project 1 yellow trip Parquet files and `taxi_zone_lookup.parquet` (`LocationID`, `Zone`) under `data/`.
+yellow trip Parquet files and `taxi_zone_lookup.parquet` (`LocationID`, `Zone`) under `data/`.
 
 ## Run
 
