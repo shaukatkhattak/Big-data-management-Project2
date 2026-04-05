@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Spark
+checkpoints/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Data (NYC Taxi Parquet files are large)
+data/*.parquet
+
+# Docker
+.docker/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
