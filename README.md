@@ -41,4 +41,4 @@ docker exec spark-iceberg bash /notebooks/spark_submit.sh /notebooks/print_stats
 
 **Invalid trip % (example from pipeline):** **27.27%** — confirm with `print_stats.py` or SQL on `rest.default.gold_invalid_trips` (see `REPORT.md`).
 
-See **`REPORT.md`** for checkpoint triggers, restart check, snapshot query, and custom scenario.
+See **`REPORT.md`** for checkpoint triggers, restart check, snapshot query, and our custom scenario assigned to us.
